@@ -55,4 +55,4 @@ Bring Vue SPA to Android app.
 
 ## Before Build in Android Studio
 
-Change `node_modules` to `_node_modules`.
+Delete `node_modules`
