@@ -32,7 +32,7 @@ Bring Vue SPA to Android app.
 
 	```
 	app/src/main/AndroidManifest.xml
-	app/src/main/java/com/mzaini30/applicationName/MainActivity.java
+	app/src/main/java/com/user/app/MainActivity.java
 	```
 	
 5. Version
@@ -46,8 +46,8 @@ Bring Vue SPA to Android app.
 	```
 	app/build.gradle
 	app/src/main/AndroidManifest.xml
-	app/src/main/java/com/mzaini30/applicationName/
-	app/src/main/java/com/mzaini30/applicationName/MainActivity.java
+	app/src/main/java/com/user/app/
+	app/src/main/java/com/user/app/MainActivity.java
 	```
 	
 7. Keystore
