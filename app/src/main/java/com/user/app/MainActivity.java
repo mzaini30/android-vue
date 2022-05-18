@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.content.Context;
 import android.view.KeyEvent;
-import android.webkit.URLUtil;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -13,9 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.webkit.WebViewAssetLoader;
 import androidx.webkit.WebViewAssetLoader.AssetsPathHandler;
-import androidx.annotation.RequiresApi;
+
 import android.webkit.WebResourceResponse;
-import android.webkit.WebResourceRequest;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -98,37 +96,16 @@ public class MainActivity extends AppCompatActivity {
         });
 
         final WebViewAssetLoader assetLoader = new WebViewAssetLoader.Builder()
-            .addPathHandler("/", new AssetsPathHandler(this))
+            // .setDomain("api.example.com")
+            .addPathHandler("/assets/", new AssetsPathHandler(this))
             .build();
 
         WebView webview = (WebView) findViewById(R.id.webview);
 
         webview.setWebViewClient(new WebViewClient() {
-            @Override
-            @RequiresApi(21)
-            public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
-                return assetLoader.shouldInterceptRequest(request.getUrl());
-            }
 
-            @Override
-            @SuppressWarnings("deprecation") // for API < 21
-            public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
-                return assetLoader.shouldInterceptRequest(Uri.parse(request));
-            }
-        });
-
-        WebSettings webSettings = webview.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setDatabaseEnabled(true);
-        String databasePath = this.getApplicationContext().getDir("database", Context.MODE_PRIVATE).getPath();
-        webSettings.setDatabasePath(databasePath);
-        webSettings.setDomStorageEnabled(true);
-
-        webview.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                // TODO Auto-generated method stub
-
+          @Override
+              public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
                 if (
                     (
                         url.contains("http://") 
@@ -138,16 +115,21 @@ public class MainActivity extends AppCompatActivity {
                 ){
                     Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                     startActivity(i);
-                } else {
-                    view.loadUrl(url);
                 }
-                return true;
-
+              return assetLoader.shouldInterceptRequest(Uri.parse(((url.contains("http://") || url.contains("https://")) && !url.contains("https://appassets.androidplatform.net/")) ? null : url));
             }
-        });
+         });
+
+        WebSettings webSettings = webview.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setDatabaseEnabled(true);
+        String databasePath = this.getApplicationContext().getDir("database", Context.MODE_PRIVATE).getPath();
+        webSettings.setDatabasePath(databasePath);
+        webSettings.setDomStorageEnabled(true);
+
 
         if (savedInstanceState == null) {
-            webview.loadUrl("https://appassets.androidplatform.net/index.html");
+            webview.loadUrl("https://appassets.androidplatform.net/assets/dist/");
         }
 
     }

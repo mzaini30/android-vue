@@ -4,7 +4,7 @@ Bring Vue SPA to Android app.
 
 ## Have to Modified
 
-1. Content
+1. Vue app
 
 	```
 	app/src/main/assets/
@@ -52,3 +52,7 @@ Bring Vue SPA to Android app.
 	
 7. Keystore
 8. Logo
+
+## Before Build in Android Studio
+
+Change `node_modules` to `_node_modules`.
