@@ -11,7 +11,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import androidx.appcompat.app.AppCompatActivity;
 
-import androidx.webkit.WebViewAssetLoader
+import androidx.webkit.WebViewAssetLoader;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -35,18 +35,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        StartAppSDK.init(this, "123456789", false);
+        StartAppSDK.init(this, "204848974", false);
         StartAppAd.disableSplash();
-
-        // AdMob banner ad test id: ca-app-pub-3940256099942544/6300978111
-        // my banner ad id: ca-app-pub-2878374163061282/6615438108
-        // change to your own ad id
-        // Change in MainActivity.java and activity_main.xml
-
-        // MobileAds.initialize(this, "ca-app-pub-9804745932553029/2998350195");
-        // mAdView = (AdView)findViewById(R.id.adView);
-        // AdRequest adRequest = new AdRequest.Builder().build();
-        // mAdView.loadAd(adRequest);
 
         RelativeLayout mainLayout = (RelativeLayout)findViewById(R.id.mainLayout);
         mainLayout.setVisibility(View.GONE);
@@ -103,21 +93,45 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        final WebViewAssetLoader assetLoader = new WebViewAssetLoader.Builder()
+            .addPathHandler("/", new AssetsPathHandler(this))
+            .build();
+
         WebView webview = (WebView) findViewById(R.id.webview);
+
+        webview.setWebViewClient(new WebViewClient() {
+            @Override
+            @RequiresApi(21)
+            public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+                return assetLoader.shouldInterceptRequest(request.getUrl());
+            }
+
+            @Override
+            @SuppressWarnings("deprecation") // for API < 21
+            public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+                return assetLoader.shouldInterceptRequest(Uri.parse(request));
+            }
+        });
+
         WebSettings webSettings = webview.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setDatabaseEnabled(true);
         String databasePath = this.getApplicationContext().getDir("database", Context.MODE_PRIVATE).getPath();
         webSettings.setDatabasePath(databasePath);
         webSettings.setDomStorageEnabled(true);
-//        setContentView(webview);
 
         webview.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 // TODO Auto-generated method stub
 
-                if (url.contains("http://") || url.contains("https://")){
+                if (
+                    (
+                        url.contains("http://") 
+                        || url.contains("https://")
+                    ) 
+                    && !url.contains("https://appassets.androidplatform.net/")
+                ){
                     Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                     startActivity(i);
                 } else {
@@ -128,10 +142,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // replace this with your own link/web app address
         if (savedInstanceState == null) {
-            webview.loadUrl("file:///android_asset/index.html");
+            webview.loadUrl("https://appassets.androidplatform.net/index.html");
         }
+
     }
 
     @Override
