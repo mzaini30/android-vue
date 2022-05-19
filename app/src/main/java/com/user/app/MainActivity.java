@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.webkit.WebViewAssetLoader;
 import androidx.webkit.WebViewAssetLoader.AssetsPathHandler;
 
+import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 
 import com.google.android.gms.ads.AdRequest;
@@ -105,18 +106,26 @@ public class MainActivity extends AppCompatActivity {
         webview.setWebViewClient(new WebViewClient() {
 
           @Override
-              public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-                if (
-                    (
-                        url.contains("http://") 
-                        || url.contains("https://")
-                    ) 
-                    && !url.contains("https://appassets.androidplatform.net/")
-                ){
-                    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            public WebResourceResponse shouldInterceptRequest(WebView view,  WebResourceRequest request) {
+
+                WebResourceResponse intercepted = assetLoader.shouldInterceptRequest(request.getUrl());
+                if (request.getUrl().toString().contains("play.google.com")){
+                    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(request.getUrl().toString()));
                     startActivity(i);
+                    intercepted = null;
                 }
-              return assetLoader.shouldInterceptRequest(Uri.parse(((url.contains("http://") || url.contains("https://")) && !url.contains("https://appassets.androidplatform.net/")) ? null : url));
+                if (request.getUrl().toString().endsWith("js")) {
+                        if (intercepted != null) {
+                            intercepted.setMimeType("text/javascript");
+                        }
+                }
+                return intercepted;
+
+              //   if (url.contains("play.google.com")){
+              //       Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+              //       startActivity(i);
+              //   }
+              // return assetLoader.shouldInterceptRequest(Uri.parse(url.contains("play.google.com") ? null : url));
             }
          });
 
