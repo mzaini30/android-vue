@@ -105,29 +105,28 @@ public class MainActivity extends AppCompatActivity {
 
         webview.setWebViewClient(new WebViewClient() {
 
-          @Override
+            @Override
             public WebResourceResponse shouldInterceptRequest(WebView view,  WebResourceRequest request) {
-
-                WebResourceResponse intercepted = assetLoader.shouldInterceptRequest(request.getUrl());
-                if (request.getUrl().toString().contains("play.google.com")){
-                    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(request.getUrl().toString()));
-                    startActivity(i);
-                    intercepted = null;
-                }
-                if (request.getUrl().toString().endsWith("js")) {
-                        if (intercepted != null) {
-                            intercepted.setMimeType("text/javascript");
-                        }
-                }
-                return intercepted;
-
-              //   if (url.contains("play.google.com")){
-              //       Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-              //       startActivity(i);
-              //   }
-              // return assetLoader.shouldInterceptRequest(Uri.parse(url.contains("play.google.com") ? null : url));
+                return assetLoader.shouldInterceptRequest(request.getUrl());
             }
-         });
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (
+                    url.contains("http://") 
+                    || url.contains("https://")
+                    && !url.contains("https://appassets.androidplatform.net")
+                ){
+                    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(i);
+                    return true;
+                } else {
+                    return false;
+                }
+
+            }
+          
+        });
 
         WebSettings webSettings = webview.getSettings();
         webSettings.setJavaScriptEnabled(true);
