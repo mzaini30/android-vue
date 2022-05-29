@@ -8,13 +8,18 @@ import Inspector from "vite-plugin-vue-inspector"
 import yaml from 'vite-plugin-yaml2'
 import legacy from "@vitejs/plugin-legacy"
 import unocss from 'unocss/vite'
+import apply from '@unocss/transformer-directives'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     yaml(),
     legacy(),
-    unocss(),
+    unocss({
+      transformers: [
+        apply()
+      ]
+    }),
     vue({
       include: [/\.vue$/, /\.md$/], // <--
     }), 
@@ -30,8 +35,6 @@ export default defineConfig({
       }
     }),
     Layouts(),
-    Inspector({
-      enabled: false
-    })
+    Inspector()
   ]
 })

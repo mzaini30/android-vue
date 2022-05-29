@@ -5,3 +5,9 @@
 		<p>Go to <router-link class='underline decoration-wavy' to="/about">about page</router-link></p>
 	</div>
 </template>
+
+<style scoped="">
+	h1 {
+		@apply text-center
+	}
+</style>
