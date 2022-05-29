@@ -7,12 +7,14 @@ import Prism from 'markdown-it-prism'
 import Inspector from "vite-plugin-vue-inspector"
 import yaml from 'vite-plugin-yaml2'
 import legacy from "@vitejs/plugin-legacy"
+import unocss from 'unocss/vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     yaml(),
     legacy(),
+    unocss(),
     vue({
       include: [/\.vue$/, /\.md$/], // <--
     }), 
