@@ -16,7 +16,7 @@ Bring Vue SPA to Android app.
 	app/src/main/res/values/strings.xml
 	```
 	
-3. Admob banner (test: ca-app-pub-3940256099942544/6300978111)
+3. Admob banner `(test: ca-app-pub-3940256099942544/6300978111)`
 
 	```
 	app/src/main/res/layout/activity_main.xml
