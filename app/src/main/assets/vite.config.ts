@@ -7,7 +7,6 @@ import pages from "vite-plugin-pages";
 import unocss from "unocss/vite";
 import yaml from "vite-plugin-yaml2";
 import apply from "@unocss/transformer-directives";
-import generateSitemap from "vite-plugin-pages-sitemap";
 import Prism from "markdown-it-prism";
 
 const hostname = "http://localhost:3000/";
@@ -24,7 +23,6 @@ export default defineConfig({
       include: [/\.vue$/, /\.md$/], // <--
     }),
     pages({
-      onRoutesGenerated: (routes) => generateSitemap({ routes, hostname }),
       extensions: ["vue", "md"],
     }),
     Markdown({
