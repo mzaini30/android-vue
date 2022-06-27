@@ -1,59 +1,16 @@
-# Template Vue
+# Vue 3 + TypeScript + Vite
 
-## Menggunakan Vue Editor
+This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
 
-Tambahkan di `~/.bashrc`:
+## Recommended IDE Setup
 
-```bash
-export VUE_EDITOR=subl
-```
+- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
 
-## Meletakkan File-File Vue dan Markdown
+## Type Support For `.vue` Imports in TS
 
-Di folder `src/pages/`.
+Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's Take Over mode by following these steps:
 
-## Meletakkan File-File Static
+1. Run `Extensions: Show Built-in Extensions` from VS Code's command palette, look for `TypeScript and JavaScript Language Features`, then right click and select `Disable (Workspace)`. By default, Take Over mode will enable itself if the default TypeScript extension is disabled.
+2. Reload the VS Code window by running `Developer: Reload Window` from the command palette.
 
-Di folder `public/`.
-
-## Mengubah Base URL (untuk keperluan sitemap)
-
-Pada file `vite.config.js`, pada bagian:
-
-```javascript
-const hostname = 'http://localhost:3000/'
-```
-
-## Contoh File Markdown dengan Head
-
-```markdown
----
-title: About
----
-
-# Ini adalah Halaman About
-
-Lumayan
-```
-
-## Ngelink ke Halaman Lain
-
-```html
-<router-link to="/about">Halaman About</router-link>
-```
-
-## Contoh Menggunakan Head pada Halaman Vue
-
-```html
-<script setup="">
-	import {Head} from '@vueuse/head'
-</script>
-
-<template>
-	<Head>
-		<title>Hai...</title>
-	</Head>
-
-	<p>Ini adalah bagian beranda</p>
-</template>
-```
+You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/volar/discussions/471).
